@@ -16,7 +16,12 @@ def engage():
     host = vpn_dict['host']
 
     # issue connect command
-    command = "printf '" + login + "\n\n" + password + "\ny' | /opt/cisco/anyconnect/bin/vpn -s connect " + host
+    command = """/opt/cisco/anyconnect/bin/vpn -s connect {} <<"EOF"
+{}
+
+{}
+y
+EOF""".format(host, login, password)
     os.system(command)
     # timeout while we connect
     time.sleep(30)
