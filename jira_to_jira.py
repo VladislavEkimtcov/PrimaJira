@@ -42,38 +42,21 @@ shlog.basicConfig(level=shlog.__dict__[tool_log])
 tool_fixer = tool_dict['fix']
 
 if __name__ == '__main__':
-    # get epic list
-    m.vpn_toggle(True)
-    # get ncsa tickets
-    ncsa_tickets = m.get_activity_tickets(primaserver, primauser, primapasswd, con.server)
-    ncsa_step_tickets = m.get_step_tickets(primaserver, primauser, primapasswd, con.server)
-    # get lsst tickets
-    lsst_tickets = m.get_activity_tickets(primaserver, primauser, primapasswd, con_target.server)
-    lsst_step_tickets = m.get_step_tickets(primaserver, primauser, primapasswd, con_target.server)
-    
-    # loop through ncsa tickets and get their statuses
-    for ncsa_ticket in ncsa_tickets:
-        # check if there's a matching LSST ticket
-        if ncsa_ticket in lsst_tickets:
-            ncsa_jira_id = ncsa_tickets[ncsa_ticket]
-            lsst_jira_id = lsst_tickets[ncsa_ticket]
-            issue = con.get_issue(ncsa_jira_id)
-            if issue:
-                status = str(issue.fields.status)
-                shlog.verbose('Processing ticket ' + ncsa_jira_id + ' with status ' + status)
-                lsst_status = jira_status_translator(status)
-                con_target.post_status(lsst_jira_id,lsst_status)
-            else:
-                # the issue is not present in JIRA
-                shlog.verbose(ncsa_jira_id + " doesn't exist!")
-                continue
+    # the new world order
+    import projectAPI as p
+    c = p.ProjectInterface(r"C:\Users\user\Downloads\Large Synoptic Survey Telescope Project.mpp")
 
-    # same as above for subissues
-    for ncsa_ticket in ncsa_step_tickets:
-        # check if there's a matching LSST ticket
-        if ncsa_ticket in lsst_step_tickets:
-            ncsa_jira_id = ncsa_step_tickets[ncsa_ticket]
-            lsst_jira_id = lsst_step_tickets[ncsa_ticket]
+
+    # get tasks
+    tasks = c.fetch_tasks()
+    for t in tasks:
+        # sync ones with parallel tickets
+        if t.Text1 != '' and t.Text2 != '':
+            shlog.verbose("______________________")
+            shlog.verbose("Processing task: " + t.Name)
+            # quick remap to make code transfer easier
+            ncsa_jira_id = t.Text2
+            lsst_jira_id = t.Text1
             issue = con.get_issue(ncsa_jira_id)
             if issue:
                 status = str(issue.fields.status)
