@@ -40,11 +40,12 @@ loglevel=shlog.__dict__[tool_log]
 assert type(loglevel) == type(1)
 shlog.basicConfig(level=shlog.__dict__[tool_log])
 tool_fixer = tool_dict['fix']
+mppfile = tool_dict['mppfile']
 
 if __name__ == '__main__':
     # the new world order
     import projectAPI as p
-    c = p.ProjectInterface(r"C:\Users\user\Downloads\Large Synoptic Survey Telescope Project.mpp")
+    c = p.ProjectInterface(mppfile)
 
 
     # get tasks

@@ -29,3 +29,5 @@ post_cmd = touch postcmd.touch
 
 [tool-settings]
 loglevel = VERBOSE
+fix = True
+mppfile = C:\Users\ekimtco2\OneDrive - University of Illinois - Urbana\LSST\Large Synoptic Survey Telescope Project.mpp
