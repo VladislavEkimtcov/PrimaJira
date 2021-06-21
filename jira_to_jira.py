@@ -1,7 +1,7 @@
 import configparser
 import shlog
 from jiracmd import Jira
-import main as m
+import requests
 
 
 def jira_status_translator(source_status):
@@ -68,5 +68,7 @@ if __name__ == '__main__':
                 # the issue is not present in JIRA
                 shlog.verbose(ncsa_jira_id + " doesn't exist!")
                 continue
+
+    requests.post('https://api.ilert.com/api/v1/heartbeats/il1hbt1020fc8e9fb8a3fe45749c68691fc89ae0e0d1d697d790')
 
 # concerns: wontfix, LSST-2144//DM-18822
